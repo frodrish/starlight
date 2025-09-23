@@ -4,11 +4,14 @@
   "description": "",
   "scripts": {
     "astro": "astro",
-    "dev": "astro dev"
+    "dev": "astro dev",
+    "check": "astro check"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.13.10",
-    "sharp": "^0.34.4"
+    "sharp": "^0.34.4",
+    "typescript": "^5.9.2"
   }
 }

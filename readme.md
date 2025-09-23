@@ -1,11 +1,10 @@
-# Steps to setup
+# Steps to setup starlight manually
 
 1. mkdir src
 2. mkdir src/content
 3. mkdir src/content/docs
 4. mkdir src/content/pages
-
-5. cd src
+5. mkdir src/pages
 
 6. create package.json 
 ```
@@ -25,7 +24,7 @@ EOF
 
 8. Create one document
 ```
-cat > content/docs/index.md << EOF
+cat > src/content/docs/index.md << EOF
 ---
 title: My docs
 description: Learn more about my project in this docs site built with Starlight.
@@ -52,7 +51,7 @@ EOF
 ```
 10. Configure Collection
 ```
-cat > content.config.ts << EOF
+cat > src/content/content.config.ts << EOF
 import { defineCollection } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
@@ -62,6 +61,6 @@ export const collections = {
 };
 EOF
 ```
-11. npm run dev
+12. npm run dev
 
 
