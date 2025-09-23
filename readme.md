@@ -1,4 +1,6 @@
-# Steps to setup starlight manually
+# Issue with simple setup
+
+## Steps to setup starlight manually
 
 1. mkdir src
 2. mkdir src/content
@@ -64,3 +66,11 @@ EOF
 12. npm run dev
 
 
+## Fix
+In order to make starlight work with this simple configuration I have to patch:
+- [head.ts](fix/head.ts)
+- [navigation.ts](fix/navigation.ts)
+
+## Next step 
+
+- Try with latest build
