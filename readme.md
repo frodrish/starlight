@@ -5,10 +5,9 @@
 1. mkdir src
 2. mkdir src/content
 3. mkdir src/content/docs
-4. mkdir src/content/pages
-5. mkdir src/pages
 
-6. create package.json 
+
+4. create package.json 
 ```
 cat > package.json << EOF
 {
@@ -22,9 +21,9 @@ cat > package.json << EOF
 }
 EOF
 ```
-7. npm install astro @astrojs/starlight sharp
+5. npm install astro @astrojs/starlight sharp
 
-8. Create one document
+6. Create one document
 ```
 cat > src/content/docs/index.md << EOF
 ---
@@ -36,7 +35,7 @@ Welcome to my project!
 EOF
 cp content/docs/index.md .
 ```
-9. Create astro config
+7. Create astro config
 ```
 cat > astro.config.mjs << EOF
 import { defineConfig } from 'astro/config';
@@ -51,7 +50,7 @@ export default defineConfig({
 });
 EOF
 ```
-10. Configure Collection
+8. Configure Collection
 ```
 cat > src/content/content.config.ts << EOF
 import { defineCollection } from 'astro:content';
@@ -63,27 +62,8 @@ export const collections = {
 };
 EOF
 ```
-*To remove this warning:*
-```
-Auto-generating collections for folders in "src/content/" that are not defined as collections.
-This is deprecated, so you should define these collections yourself in "src/content.config.ts".
-The following collections have been auto-generated: docs, pages
-```
-Use this version instead
-```
-cat > src/content/content.config.ts << EOF
-import { defineCollection } from 'astro:content';
-import { docsLoader } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
 
-export const collections = {
-  docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
-  pages: defineCollection({ loader: docsLoader(), schema: docsSchema() })
-};
-EOF
-```
-
-11. npm run issue
+9. npm run issue
 
 
 ## Fix
