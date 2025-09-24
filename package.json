@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "astro": "astro",
-    "issue": "astro dev --config astro.config.issue.mjs",
+    "docs": "astro dev --config astro.config.docs.mjs",
     "dev": "astro dev",
     "check": "astro check"
   },

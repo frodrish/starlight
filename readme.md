@@ -10,7 +10,7 @@ mkdir src/content/docs
 ```
 
 
-2. create package.json 
+2. create package.json(if required) 
 ```
 cat > package.json << EOF
 {
@@ -24,7 +24,7 @@ cat > package.json << EOF
 }
 EOF
 ```
-3. npm install astro @astrojs/starlight sharp
+3. npm install astro @astrojs/starlight sharp #if required
 
 4. Create documents
 ```
@@ -36,7 +36,7 @@ description: Learn more about my project in this docs site built with Starlight.
 
 Welcome to my project!
 EOF
-cp src/content/docs/index.md .
+cp src/content/docs/index.md src/.
 ```
 5. Create astro config
 ```
@@ -66,5 +66,76 @@ export const collections = {
 EOF
 ```
 
-7. npm run issue
+7. npm run dev
 
+## How to have starlight run in /docs
+
+[Discussion](https://github.com/withastro/starlight/discussions/1257)
+
+[Reference](https://stackblitz.com/edit/github-yvpchbvn?file=src%2Fcontent.config.ts)
+
+1. Create directories
+```
+mkdir docs
+mkdir docs/test
+```
+
+2 to 3 run steps in above section if required
+
+4. Create documents
+```
+cat > docs/index.md << EOF
+---
+title: My docs
+description: Learn more about my project in this docs site built with Starlight.
+---
+
+Welcome to my project!
+EOF
+cp docs/index.md docs/test/.
+cp docs/index.md docs/test/test.md
+```
+
+5. Create astro.config.doc.mjs
+```
+cat > astro.config.doc.mjs << EOF
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+
+export default defineConfig({
+  srcDir: './docs',
+  integrations: [
+    starlight({
+      title: 'My docs site',
+      social: [ { icon: 'github', label: 'GitHub', href: 'https://github.com/frodrish/starlight'}],
+      sidebar: [{ 
+        label: 'test',      
+        items: [
+						// Each item here is one entry in the navigation menu.
+						{ label: 'Example Guide', slug: 'test/test' },
+					], 
+        }	
+      ],
+    }),
+  ],
+});
+EOF
+```
+
+6. Configure Collection
+```
+cat > docs/content.config.ts << EOF
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
+
+export const collections = {
+    docs: defineCollection({
+    loader: glob({ pattern: '**/*.(md|mdx)', base: './docs' }),
+    schema: docsSchema(),
+  }),
+};
+EOF
+```
+
+7. npm run dev --config content.config.docs.ts
