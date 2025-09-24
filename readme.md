@@ -122,6 +122,8 @@ TypeError: Cannot read properties of undefined (reading 'some')
 *To address:*
 cp fix/head.ts node_modules/@astrojs/starlight/utils/.
 
+or upgrade to "astro": "^5.13.11",
+
 ### Run with fixed config
 
 npm run dev

@@ -16,7 +16,6 @@ export function getHead(
 	siteTitle: string
 ): HeadConfig {
 	const { data } = entry;
-
 	const canonical = context.site ? new URL(context.url.pathname, context.site) : undefined;
 	const canonicalHref = canonical?.href
 		? formatCanonical(canonical.href, {
@@ -106,7 +105,6 @@ export function getHead(
 			},
 		});
 	}
-
 	return createHead(headDefaults, config.head, data.head);
 }
 
@@ -114,6 +112,7 @@ export function getHead(
 function createHead(defaults: HeadUserConfig, ...heads: HeadConfig[]) {
 	let head = HeadSchema.parse(defaults);
 	for (const next of heads) {
+		if(next === undefined) continue; 
 		head = mergeHead(head, next);
 	}
 	return sortHead(head);
@@ -128,7 +127,6 @@ function createHead(defaults: HeadUserConfig, ...heads: HeadConfig[]) {
  * `property`, and `http-equiv` attributes for `<meta>` tags.
  */
 function hasTag(head: HeadConfig, entry: HeadConfig[number]): boolean {
-	if(head === undefined) return false;
 	switch (entry.tag) {
 		case 'title':
 			return head.some(({ tag }) => tag === 'title');
@@ -172,7 +170,6 @@ function getAttr(
 
 /** Merge two heads, overwriting entries in the first head that exist in the second. */
 function mergeHead(oldHead: HeadConfig, newHead: HeadConfig) {
-	if(newHead === undefined) return oldHead;
 	return [...oldHead.filter((tag) => !hasTag(newHead, tag)), ...newHead];
 }
 

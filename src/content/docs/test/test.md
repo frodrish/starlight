@@ -1,5 +1,5 @@
 ---
-title: My index in test
+title: My Test
 description: Learn more about my project in this docs site built with Starlight.
 ---
 
