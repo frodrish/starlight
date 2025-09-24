@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightFullViewMode from 'starlight-fullview-mode'
 
 export default defineConfig({
   srcDir: './docs',
@@ -15,6 +16,11 @@ export default defineConfig({
 					], 
         }	
       ],
+      plugins: [
+        starlightFullViewMode({
+           // Configuration options go here.
+        })
+       ],
     }),
   ],
 });
