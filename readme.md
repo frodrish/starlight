@@ -52,7 +52,7 @@ EOF
 ```
 8. Configure Collection
 ```
-cat > src/content/content.config.ts << EOF
+cat > src/content.config.ts << EOF
 import { defineCollection } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
