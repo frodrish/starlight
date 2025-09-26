@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "postinstall": "patch-package",
     "astro": "astro",
     "docs": "astro dev --config astro.config.docs.mjs",
+    "docs-build": "astro build --config astro.config.docs.mjs",
+    "docs-preview": "astro preview --config astro.config.docs.mjs",
     "dev": "astro dev",
     "check": "astro check"
   },
@@ -12,6 +15,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.13.11",
+    "patch-package": "^8.0.0",
     "sharp": "^0.34.4",
     "starlight-fullview-mode": "^0.2.3",
     "typescript": "^5.9.2"
