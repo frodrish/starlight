@@ -1,5 +1,11 @@
 # starlight
 
+## References
+
+[Astro](https://astro.build/)
+
+[Starlight](https://starlight.astro.build/)
+
 ## Steps to setup starlight manually
 
 1. Create directories 
@@ -73,6 +79,8 @@ EOF
 [Discussion](https://github.com/withastro/starlight/discussions/1257)
 
 [Reference](https://stackblitz.com/edit/github-yvpchbvn?file=src%2Fcontent.config.ts)
+
+0. rm -rf src (optional)
 
 1. Create directories
 ```
@@ -183,3 +191,18 @@ EOF
 ```
 
 3. npm run docs
+
+### Patch starlight to make fontmatter optional
+
+1. npm i patch-package -d
+2. Add pathes folder to your repo
+3. Add "postinstall": "patch-package" to package.json
+
+### To Fix routes with extension
+
+Add this code to atro config
+```
+  markdown: {
+    remarkPlugins: [remarkStripLinkExtensions],
+  },
+```
