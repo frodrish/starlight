@@ -200,9 +200,18 @@ EOF
 
 ### To Fix routes with extension
 
-Add this code to atro config
+1. Add this code to atro config
 ```
+import remarkStripLinkExtensions from './plugins/remarkStripLinkExtensions.js'
+
+...
+
   markdown: {
     remarkPlugins: [remarkStripLinkExtensions],
   },
+
+...
+
 ```
+2. Copy ./plugins/remarkStripLinkExtensions.js
+
