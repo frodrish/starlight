@@ -1,0 +1,1 @@
+This post starts with content, no heading.

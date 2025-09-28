@@ -1,28 +1,34 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightFullViewMode from 'starlight-fullview-mode'
-import remarkStripLinkExtensions from './plugins/remarkStripLinkExtensions.js'
+import remarkLinkExtensions from './plugins/remarkLinkExtensions.js'
+import remarkInjectTitle from './plugins/remarkInjectTitle.js'
+import generateSidebar from './plugins/generateSidebar.js'; 
+import tailwindcss from '@tailwindcss/vite';
+
+const srcDir = './docs';
+const customSidebar = generateSidebar(srcDir + '/index.md');
 
 export default defineConfig({
-  srcDir: './docs',
+  srcDir: srcDir,
   integrations: [
     starlight({
-      title: 'My docs site',
+      title: 'Doc Setup',
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/frodrish/starlight' }],
-      sidebar: [{
-        label: 'test',
-        items: [
-          { label: 'Example Guide', slug: 'test/test' },
-        ],
-      }
-      ],
+      sidebar: customSidebar,
       plugins: [
         starlightFullViewMode({
         })
       ],
+      customCss: [
+        './docs/styles/global.css',
+      ],
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkStripLinkExtensions],
+    remarkPlugins: [remarkLinkExtensions,remarkInjectTitle],
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
 });
