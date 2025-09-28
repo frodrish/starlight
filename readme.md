@@ -1,11 +1,14 @@
 ## starlight
 
 - [References](docs/starlight/reference.md) - Not required
-- [Setup](docs/starlight/setyp.md)
+- [Setup](docs/starlight/setUp.md)
 - [Run From Doc](docs/starlight/runfromdocs.md)
 - [Make Fontmatter Optional](docs/starlight/makefontmatteroptional.md)
 - [Route and Side Bar](docs/starlight/routesidebar.md)
 - [Make sidebar colapsable](docs/starlight/colapsablesidebar.md)
+
+## vitepress
+- [References](docs/vitepress/reference.md)
 
 ### Add tail tailwind
 
