@@ -1,7 +1,7 @@
 ## starlight
 
 - [References](docs/starlight/reference.md) - Not required
-- [Setup](docs/starlight/setUp.md)
+- [Setup](docs/starlight/setup.md)
 - [Run From Doc](docs/starlight/runfromdocs.md)
 - [Make Fontmatter Optional](docs/starlight/makefontmatteroptional.md)
 - [Route and Side Bar](docs/starlight/routesidebar.md)
