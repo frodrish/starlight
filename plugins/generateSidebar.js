@@ -9,7 +9,6 @@ function generateSidebar(pathToMarkdown = 'sidebar.md') {
 
   const sidebar = [];
   let currentGroup = null;
-
   for (const line of lines) {
     // Check if it's a top-level group (e.g., '- Guides')
     if (line.trim().startsWith('- ') && !line.trim().startsWith('- [')) {
@@ -23,7 +22,14 @@ function generateSidebar(pathToMarkdown = 'sidebar.md') {
     // Check if it's a link item (e.g., '  - [Introduction](/guides/introduction)')
     else if (line.trim().startsWith('- [')) {
       const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
-      if (linkMatch && currentGroup) {
+      if (linkMatch ) {
+        if(!currentGroup) {
+          currentGroup = {
+            label: 'Default',
+            items: [],
+          };
+          sidebar.push(currentGroup);
+        }
         const [, label, slug] = linkMatch;
         currentGroup.items.push({ label, slug:slug.replace(/\.(md|mdx)$/i, '') });
       }

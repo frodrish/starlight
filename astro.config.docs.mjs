@@ -5,6 +5,7 @@ import remarkLinkExtensions from './plugins/remarkLinkExtensions.js'
 import remarkInjectTitle from './plugins/remarkInjectTitle.js'
 import generateSidebar from './plugins/generateSidebar.js'; 
 import tailwindcss from '@tailwindcss/vite';
+import yaml from '@rollup/plugin-yaml';
 
 const srcDir = './docs';
 const customSidebar = generateSidebar(srcDir + '/index.md');
@@ -29,6 +30,6 @@ export default defineConfig({
     remarkPlugins: [remarkLinkExtensions,remarkInjectTitle],
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(),yaml()],
   },
 });
