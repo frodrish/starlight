@@ -1,0 +1,10 @@
+import StmTable from './components/stm-table.astro';
+import StmCol from './components/stm-col.astro';
+import data from 'test.yaml';
+
+
+<StmTable id="employee-data" data={data.users}>
+    <StmCol path="item.id" name="Employee ID" sortable="true" />
+    <StmCol path="item.username" name="Name"  sortable="true" />
+    <StmCol path="item.email" name="Email"  sortable="true" />
+</StmTable>

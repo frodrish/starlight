@@ -1,0 +1,97 @@
+---
+// src/components/stm-table.astro
+import type { HTMLAttributes } from 'astro/types';
+
+// Define the expected props
+interface Props extends HTMLAttributes<'table'> {
+    id: string; // The required ID for filtering
+    data: Record<string, any>[]; // The JSON array of data
+}
+
+const { id, data, ...rest } = Astro.props;
+
+if (!data || data.length === 0) {
+    return <div class="stm-table-empty-data">No data available.</div>;
+}
+
+// 1. Get column configuration from the 'config' slot children
+// We rely on the StmCol sub-components providing their props via the 'config' slot
+const columnConfigs = await Astro.slots.render('config');
+if (typeof columnConfigs !== 'string') {
+    throw new Error('StmTable requires StmCol components to be passed in the default slot.');
+}
+
+// Parse the JSON string output by the StmCol components
+let columns: { 
+    path: string; 
+    name: string; 
+    sortable: boolean; 
+    type: 'string' | 'number' | 'date'; 
+}[] = [];
+
+try {
+    // The rendered slot content is expected to be a single JSON string array from StmCol
+    columns = JSON.parse(columnConfigs);
+} catch (e) {
+    console.error('Failed to parse column configuration from StmCol components:', e);
+}
+
+// Utility to safely retrieve deeply nested attribute data (e.g., "user.profile.age")
+const getAttributeValue = (obj: any, path: string): any => {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+};
+
+// We need to link the external JavaScript and CSS files
+import { base as root } from 'astro/config';
+---
+
+<link rel="stylesheet" href={`${root}/css/sort.css`} />
+
+<div class="stm-table-container">
+    <input 
+        type="text" 
+        class="table-filter-input" 
+        target-table={id} 
+        placeholder="Filter table data..." 
+        aria-controls={id} 
+    />
+
+    <table id={id} class="sortable-table" {...rest}>
+        <thead>
+            <tr>
+                {columns.map(col => (
+                    <th 
+                        class:list={{"sortable-header": col.sortable}}
+                        data-type={col.type}
+                        data-path={col.path} 
+                        scope="col"
+                    >
+                        {col.name}
+                    </th>
+                ))}
+            </tr>
+        </thead>
+        <tbody>
+            {data.map(row => (
+                <tr>
+                    {columns.map(col => {
+                        // Retrieve the cell value using the path
+                        const cellValue = getAttributeValue(row, col.path);
+                        
+                        // Use data-value for accurate sorting if available
+                        const dataValue = (col.type === 'number' || col.type === 'date')
+                            ? cellValue?.toString() : undefined;
+
+                        return (
+                            <td data-value={dataValue}>
+                                {cellValue !== undefined && cellValue !== null ? cellValue : ''}
+                            </td>
+                        );
+                    })}
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
+<script src={`${root}/js/sort.js`} is:inline type="module"></script>

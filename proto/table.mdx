@@ -6,26 +6,42 @@ import fs from 'fs';
 import { parse } from 'yaml';
 import path from 'path'
 import { createGrid } from 'ag-grid-community';
+import data from 'test.yaml';
 
-<span class="font-medium text-sky-500">
-    {path.resolve('./docs/test.yaml')}
-</span>
+import sort from 'js/sort.js?raw'
+import sort_css from 'css/sort.css?raw'
 
-export const yamlContent = parse(fs.readFileSync('./docs/test.yaml', 'utf8'));
 
 <pre>
-{JSON.stringify(yamlContent.users, null, 2)}
+{JSON.stringify(data.users, null, 2)}
 </pre>
 
-<table class="sortable">
+<script is:inline src="js/sort.js">
+</script>
+
+
+<script is:inline>
+{sort}
+</script>
+
+<style is:inline>
+{sort_css}
+</style>
+
+<label for="filter">Filter:</label>
+<input name ="filter" target-table="1" />
+
+<table id="1" class="sortable-table">
 <tr>
-<th>ID</th>
-<th>Name</th>
+<th class="sortable-header">ID</th>
+<th class="sortable-header">Name</th>
+<th class="sortable-header">Email</th>
 </tr>
-  {yamlContent.users.map(item => (
+  {data.users.map(item => (
     <tr>
         <td>{item.id}</td>
         <td>{item.username}</td>
+        <td>{item.email}</td>
     </tr>
   ))}
 </table>
