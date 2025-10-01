@@ -26,3 +26,21 @@
 
 1. npx astro add alpinejs
 
+### Add YAML
+
+1. npm install @rollup/plugin-yaml
+
+2. Modify astro.config.mjs
+
+```js
+import { defineConfig } from 'astro/config';
+import yaml from '@rollup/plugin-yaml';
+
+export default defineConfig({
+  // ...
+  vite: {
+    plugins: [yaml()],
+  },
+});
+```
+
