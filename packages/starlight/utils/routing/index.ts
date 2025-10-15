@@ -42,7 +42,7 @@ export function normalizeCollectionEntry(entry: StarlightDocsCollectionEntry): S
 const docs: StarlightDocsEntry[] = (
 	(await getCollection('docs', ({ data }) => {
 		// In production, filter out drafts.
-		return import.meta.env.MODE !== 'production' || data.draft === false;
+		return import.meta.env.MODE !== 'production' || data.draft != true;
 	})) ?? []
 ).map(normalizeCollectionEntry);
 

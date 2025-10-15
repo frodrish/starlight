@@ -139,6 +139,12 @@ function linkFromSidebarLinkItem(item: SidebarLinkItem, locale: string | undefin
 	return makeSidebarLink(href, label, getSidebarBadge(item.badge, locale, label), item.attrs);
 }
 
+function transformPath(path :string):string {
+	const idx = path.lastIndexOf('/');
+	const lastSegment = idx !== -1 ? path.substring(idx + 1) : path;
+	return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+}
+
 /** Create a link entry from an automatic internal link item in user config. */
 function linkFromInternalSidebarLinkItem(
 	item: InternalSidebarLinkItem,
@@ -163,14 +169,14 @@ function linkFromInternalSidebarLinkItem(
 			);
 		}
 	}
+	console.error("id:", route.entry.slug, "path:", route.entry.filePath);
 	const frontmatter = route.entry.data;
 	const label =
 		pickLang(item.translations, localeToLang(locale)) ||
 		item.label ||
-		frontmatter.sidebar?.label ||
-		frontmatter.title;
-	const badge = item.badge ?? frontmatter.sidebar?.badge;
-	const attrs = { ...frontmatter.sidebar?.attrs, ...item.attrs };
+		getLabel(route);
+	const badge = item.badge ?? frontmatter?.sidebar?.badge;
+	const attrs = { ...frontmatter?.sidebar?.attrs, ...item.attrs };
 	return makeSidebarLink(
 		slugToPathname(route.slug),
 		label,
@@ -237,10 +243,11 @@ function getRoutePathRelativeToCollectionRoot(route: Route, locale: string | und
 
 /** Turn a flat array of routes into a tree structure. */
 function treeify(routes: Route[], locale: string | undefined, baseDir: string): Dir {
+	console.error("routes:", routes.map(r=>r.entry.id));
 	const treeRoot: Dir = makeDir(baseDir);
 	routes
 		// Remove any entries that should be hidden
-		.filter((doc) => !doc.entry.data.sidebar.hidden)
+		.filter((doc) => !doc.entry.data.sidebar?.hidden)
 		// Compute the path of each entry from the root of the collection ahead of time.
 		.map((doc) => [getRoutePathRelativeToCollectionRoot(doc, locale), doc] as const)
 		// Sort by depth, to build the tree depth first.
@@ -273,13 +280,17 @@ function treeify(routes: Route[], locale: string | undefined, baseDir: string): 
 	return treeRoot;
 }
 
+function getLabel(route: Route) {
+		return route.entry.data?.sidebar?.label || route.entry.data?.title || transformPath(route.entry.id);
+}
+
 /** Create a link entry for a given content collection entry. */
 function linkFromRoute(route: Route, attrs?: LinkHTMLAttributes): SidebarLink {
 	return makeSidebarLink(
 		slugToPathname(route.slug),
-		route.entry.data.sidebar.label || route.entry.data.title,
-		route.entry.data.sidebar.badge,
-		{ ...attrs, ...route.entry.data.sidebar.attrs }
+		getLabel(route),
+		route.entry.data.sidebar?.badge,
+		{ ...attrs, ...route.entry.data.sidebar?.attrs }
 	);
 }
 
@@ -291,7 +302,7 @@ function getOrder(routeOrDir: Route | Dir): number {
 	return isDir(routeOrDir)
 		? Math.min(...Object.values(routeOrDir).flatMap(getOrder))
 		: // If no order value is found, set it to the largest number possible.
-			(routeOrDir.entry.data.sidebar.order ?? Number.MAX_VALUE);
+			(routeOrDir.entry.data.sidebar?.order ?? Number.MAX_VALUE);
 }
 
 /** Sort a directory’s entries by user-specified order or alphabetically if no order specified. */

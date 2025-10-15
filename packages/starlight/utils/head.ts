@@ -114,6 +114,7 @@ export function getHead(
 function createHead(defaults: HeadUserConfig, ...heads: HeadConfig[]) {
 	let head = HeadSchema.parse(defaults);
 	for (const next of heads) {
+		if(!next) continue;
 		head = mergeHead(head, next);
 	}
 	return sortHead(head);

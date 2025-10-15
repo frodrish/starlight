@@ -26,7 +26,7 @@ const frontmatterSchema = docsSchema()({
 
 function mockDoc(
 	docsFilePath: string,
-	data: z.input<typeof frontmatterSchema>,
+	data?: z.input<typeof frontmatterSchema>,
 	body = ''
 ): StarlightDocsCollectionEntry {
 	const slug = docsFilePath
@@ -39,7 +39,7 @@ function mockDoc(
 		id: project.legacyCollections ? docsFilePath : slug,
 		body,
 		collection: 'docs',
-		data: frontmatterSchema.parse(data),
+		data: data ? frontmatterSchema.parse(data) : null,
 	};
 
 	if (project.legacyCollections) {
