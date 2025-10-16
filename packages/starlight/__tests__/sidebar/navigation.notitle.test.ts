@@ -5,14 +5,18 @@ import type { SidebarEntry } from '../../utils/routing/types';
 vi.mock('astro:content', async () =>
 	(await import('../test-utils')).mockedAstroContent({
 		docs: [
+			// @ts-expect-error: Expected a string here
 			['index.mdx',null],
 			['environmental-impact.md', { title: 'Eco-friendly docs' }],
+			// @ts-expect-error: Expected a string here
 			['resources/plugins.mdx', null],
+			// @ts-expect-error: Expected a string here
 			['resources/themes.mdx', null],
 			['reference/configuration.mdx', { title: 'Config Reference' }],
 			['reference/frontmatter.md', { title: 'Frontmatter Reference' }],
 			['reference/frontmatter/foo.mdx', { title: 'Foo' }],
 			['api/v1/users.md', { title: 'Users API' }],
+			// @ts-expect-error: Expected a string here
 			['guides/project-structure.mdx', null],
 			['Deprecated API/users.md', { title: 'Deprecated Users API' }],
 		],
