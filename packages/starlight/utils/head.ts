@@ -2,7 +2,7 @@ import config from 'virtual:starlight/user-config';
 import project from 'virtual:starlight/project-context';
 import { version } from '../package.json';
 import { type HeadConfig, HeadConfigSchema, type HeadUserConfig } from '../schemas/head';
-import type { PageProps, RouteDataContext } from './routing/data';
+import { type PageProps, type RouteDataContext,getTitle } from './routing/data';
 import { fileWithBase } from './base';
 import { formatCanonical } from './canonical';
 import { localizedUrl } from './localizedUrl';
@@ -15,7 +15,8 @@ export function getHead(
 	context: RouteDataContext,
 	siteTitle: string
 ): HeadConfig {
-	const { data } = entry;
+	const { data} = entry;
+	const title = getTitle(entry);
 
 	const canonical = context.site ? new URL(context.url.pathname, context.site) : undefined;
 	const canonicalHref = canonical?.href
@@ -32,7 +33,7 @@ export function getHead(
 			tag: 'meta',
 			attrs: { name: 'viewport', content: 'width=device-width, initial-scale=1' },
 		},
-		{ tag: 'title', content: `${data.title} ${config.titleDelimiter} ${siteTitle}` },
+		{ tag: 'title', content: `${title} ${config.titleDelimiter} ${siteTitle}` },
 		{ tag: 'link', attrs: { rel: 'canonical', href: canonicalHref } },
 		{ tag: 'meta', attrs: { name: 'generator', content: context.generator } },
 		{
@@ -49,7 +50,7 @@ export function getHead(
 			},
 		},
 		// OpenGraph Tags
-		{ tag: 'meta', attrs: { property: 'og:title', content: data.title } },
+		{ tag: 'meta', attrs: { property: 'og:title', content: title } },
 		{ tag: 'meta', attrs: { property: 'og:type', content: 'article' } },
 		{ tag: 'meta', attrs: { property: 'og:url', content: canonicalHref } },
 		{ tag: 'meta', attrs: { property: 'og:locale', content: lang } },

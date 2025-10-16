@@ -158,3 +158,13 @@ async function get404Route(locals: App.Locals): Promise<Route> {
 	const entry = userEntry ? normalizeCollectionEntry(userEntry) : fallbackEntry;
 	return { ...entryMeta, entryMeta, entry, id: entry.id, slug: entry.slug };
 }
+
+export function getTitle(entry: StarlightDocsEntry) {
+	return entry.data?.sidebar?.label || entry.data?.title || transformPath(entry.id);
+}
+
+function transformPath(path :string):string {
+	const idx = path.lastIndexOf('/');
+	const lastSegment = idx !== -1 ? path.substring(idx + 1) : path;
+	return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+}

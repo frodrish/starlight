@@ -21,6 +21,7 @@ import {
 	stripLeadingAndTrailingSlashes,
 } from './path';
 import { getLocaleRoutes, routes } from './routing';
+import {getTitle} from './routing/data'
 import type {
 	SidebarGroup,
 	SidebarLink,
@@ -139,12 +140,6 @@ function linkFromSidebarLinkItem(item: SidebarLinkItem, locale: string | undefin
 	return makeSidebarLink(href, label, getSidebarBadge(item.badge, locale, label), item.attrs);
 }
 
-function transformPath(path :string):string {
-	const idx = path.lastIndexOf('/');
-	const lastSegment = idx !== -1 ? path.substring(idx + 1) : path;
-	return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
-}
-
 /** Create a link entry from an automatic internal link item in user config. */
 function linkFromInternalSidebarLinkItem(
 	item: InternalSidebarLinkItem,
@@ -169,12 +164,11 @@ function linkFromInternalSidebarLinkItem(
 			);
 		}
 	}
-	console.error("id:", route.entry.slug, "path:", route.entry.filePath);
 	const frontmatter = route.entry.data;
 	const label =
 		pickLang(item.translations, localeToLang(locale)) ||
 		item.label ||
-		getLabel(route);
+		getTitle(route.entry);
 	const badge = item.badge ?? frontmatter?.sidebar?.badge;
 	const attrs = { ...frontmatter?.sidebar?.attrs, ...item.attrs };
 	return makeSidebarLink(
@@ -243,7 +237,6 @@ function getRoutePathRelativeToCollectionRoot(route: Route, locale: string | und
 
 /** Turn a flat array of routes into a tree structure. */
 function treeify(routes: Route[], locale: string | undefined, baseDir: string): Dir {
-	console.error("routes:", routes.map(r=>r.entry.id));
 	const treeRoot: Dir = makeDir(baseDir);
 	routes
 		// Remove any entries that should be hidden
@@ -280,15 +273,11 @@ function treeify(routes: Route[], locale: string | undefined, baseDir: string): 
 	return treeRoot;
 }
 
-function getLabel(route: Route) {
-		return route.entry.data?.sidebar?.label || route.entry.data?.title || transformPath(route.entry.id);
-}
-
 /** Create a link entry for a given content collection entry. */
 function linkFromRoute(route: Route, attrs?: LinkHTMLAttributes): SidebarLink {
 	return makeSidebarLink(
 		slugToPathname(route.slug),
-		getLabel(route),
+		getTitle(route.entry),
 		route.entry.data.sidebar?.badge,
 		{ ...attrs, ...route.entry.data.sidebar?.attrs }
 	);
