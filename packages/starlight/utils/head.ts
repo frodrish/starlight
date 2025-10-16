@@ -15,7 +15,7 @@ export function getHead(
 	context: RouteDataContext,
 	siteTitle: string
 ): HeadConfig {
-	const { data} = entry;
+	const { data } = entry;
 	const title = getTitle(entry);
 
 	const canonical = context.site ? new URL(context.url.pathname, context.site) : undefined;
