@@ -1,26 +1,23 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// https://astro.build/config
+
+
+const sidebarTest = [{
+            label: 'Title Test',
+            items: [
+                { label: 'Test: No Title And No Header', slug: 'test/notitlenoheader' },
+                { label: 'Test: No Title And With Header', slug: 'test/notitlewithheader' },
+                { label: 'Test: With Title', slug: 'test/withtitle' },
+            ],
+        }]
+
 export default defineConfig({
-	integrations: [
-		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
-			sidebar: [
-				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
-				},
-				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
-				},
-			],
-		}),
-	],
+    integrations: [
+    starlight({
+        title: 'No Fontmatter',
+        sidebar: sidebarTest,
+    }),
+    ],
+
 });
