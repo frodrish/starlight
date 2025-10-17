@@ -160,11 +160,20 @@ async function get404Route(locals: App.Locals): Promise<Route> {
 }
 
 export function getTitle(entry: StarlightDocsEntry) {
-	return entry.data?.sidebar?.label || entry.data?.title || transformPath(entry.id);
+	return entry.data?.sidebar?.label || entry.data?.title || transformPath(entry.filePath);
 }
 
-function transformPath(path :string):string {
+function transformPath(path: string): string {
 	const idx = path.lastIndexOf('/');
-	const lastSegment = idx !== -1 ? path.substring(idx + 1) : path;
-	return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+	let lastSegment = idx !== -1 ? path.substring(idx + 1) : path;
+	// Remove file extension if present
+	const dotIdx = lastSegment.lastIndexOf('.');
+	if (dotIdx > 0) lastSegment = lastSegment.substring(0, dotIdx);
+	// Replace - and _ with space, and uppercase the first letter after each separator
+	lastSegment = lastSegment.replace(/[-_](\w)/g, (_, c) => ' ' + c.toUpperCase());
+	// Add space before camelCase words (e.g., 'myPluginName' -> 'my Plugin Name')
+	lastSegment = lastSegment.replace(/([a-z])([A-Z])/g, '$1 $2');
+	// Uppercase the first character
+	lastSegment = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+	return lastSegment;
 }
